@@ -92,12 +92,21 @@ angular.module('zmon2App').controller('ChangesCtrl', ['$scope', '$location', 'AP
 
     $scope.getHTMLDiff = function(unifiedDiff) {
         return Diff2Html.getPrettyHtml(unifiedDiff, {
+            renderNothingWhenEmpty: false,
             rawTemplates: {
-                'line-by-line-numbers': '<div class="line-num2">{{newNumber}}</div>'
+                'generic-wrapper': '{{{content}}}',
+                'line-by-line-numbers': '<div class="line-num2">{{newNumber}}</div>',
+                'line-by-line-file-diff': '    <div class="d2h-file-diff">' +
+                                          '        <div class="d2h-code-wrapper">' +
+                                          '            <table class="d2h-diff-table">' +
+                                          '                <tbody class="d2h-diff-tbody">' +
+                                          '                {{{diffs}}}' +
+                                          '                </tbody>' +
+                                          '            </table>' +
+                                          '        </div>' +
+                                          '    </div>'
             }
         });
-
-        // return '<pre>' + unifiedDiff + '</pre>';
     };
 
     // Counting the size of history changes

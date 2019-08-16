@@ -205,7 +205,7 @@ public class HistoryServiceImpl implements HistoryService {
 "Check definition",
                 rowDataLines,
                 DiffUtils.diff(rowDataLines, currentRowDataLines),
-    50
+                50
             ));
         }
         catch(DiffException e) {
