@@ -13,6 +13,8 @@ public class ActivityDiff extends Activity {
 
     private String lastModifiedBy;
 
+    private String unifiedDiff;
+
     public long getHistoryId() {
         return historyId;
     }
@@ -51,6 +53,14 @@ public class ActivityDiff extends Activity {
 
     public void setLastModifiedBy(final String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public String getUnifiedDiff() {
+        return unifiedDiff;
+    }
+
+    public void setUnifiedDiff(String unifiedDiff) {
+        this.unifiedDiff = unifiedDiff;
     }
 
     @Override

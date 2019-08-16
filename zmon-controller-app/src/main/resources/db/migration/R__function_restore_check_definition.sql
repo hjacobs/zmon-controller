@@ -11,6 +11,8 @@ DECLARE
 
     changed_fields HSTORE;
     restored_fields HSTORE;
+
+    is_permission_denied BOOLEAN;
 BEGIN
     -- Fetch check definition change
     SELECT cdh_check_definition_id, cdh_row_data, cdh_changed_fields
@@ -51,9 +53,11 @@ BEGIN
     new_check_definition.potential_analysis = (CASE WHEN restored_fields ? 'cd_potential_analysis' THEN restored_fields->'cd_potential_analysis' ELSE current_check_definition.potential_analysis END);
     new_check_definition.potential_impact = (CASE WHEN restored_fields ? 'cd_potential_impact' THEN restored_fields->'cd_potential_impact' ELSE current_check_definition.potential_impact END);
     new_check_definition.potential_solution = (CASE WHEN restored_fields ? 'cd_potential_solution' THEN restored_fields->'cd_potential_solution' ELSE current_check_definition.potential_solution END);
-    PERFORM zzm_api.create_or_update_check_definition(new_check_definition, user_name, user_teams, user_is_admin);
 
-    RETURN TRUE;
+    SELECT permission_denied INTO is_permission_denied
+    FROM zzm_api.create_or_update_check_definition(new_check_definition, user_name, user_teams, user_is_admin, TRUE, new_check_definition.runtime);
+
+    RETURN NOT is_permission_denied;
 END
 $$
     LANGUAGE 'plpgsql'

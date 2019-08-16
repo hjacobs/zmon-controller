@@ -90,6 +90,16 @@ angular.module('zmon2App').controller('ChangesCtrl', ['$scope', '$location', 'AP
         return res.join('<br>');
     };
 
+    $scope.getHTMLDiff = function(unifiedDiff) {
+        return Diff2Html.getPrettyHtml(unifiedDiff, {
+            rawTemplates: {
+                'line-by-line-numbers': '<div class="line-num2">{{newNumber}}</div>'
+            }
+        });
+
+        // return '<pre>' + unifiedDiff + '</pre>';
+    };
+
     // Counting the size of history changes
     $scope.total = function() {
         return $scope.changes.length;
@@ -119,5 +129,11 @@ angular.module('zmon2App').controller('ChangesCtrl', ['$scope', '$location', 'AP
     // Calculating the background color of event labels
     $scope.hslFromEventType = function(id) {
         return "hsla(" + ((id * 6151 % 1000 / 1000.0) * 360) + ", 50%, 50%, 1);";
+    };
+
+    $scope.restoreCheckDefinition = function(checkDefinitionHistoryId) {
+        CommunicationService.restoreCheckDefinition(checkDefinitionHistoryId).then(function() {
+            console.log('It happened');
+        });
     };
 }]);
